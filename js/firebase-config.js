@@ -9,7 +9,7 @@
 //  (деректер браузердің localStorage-інде сақталады).
 // ============================================================
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyAVtNgq-nkB0frMNqdafs-fvbtcyuf7RAc",
   authDomain: "smart-dc-13e0a.firebaseapp.com",
   projectId: "smart-dc-13e0a",
