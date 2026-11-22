@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="kk" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Data Center — IoT мониторинг</title>
+  <meta name="description" content="Деректер орталығын басқаруға және мониторинг жүргізуге арналған IoT веб-платформа">
+  <meta property="og:title" content="Smart Data Center — IoT мониторинг">
+  <meta property="og:description" content="Деректер орталығының датчиктерін, құрылғыларын және автоматикасын басқаратын IoT платформа">
+  <meta name="theme-color" content="#0C0D15">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2314151F'/%3E%3Crect x='9' y='7' width='14' height='18' rx='2.5' fill='none' stroke='%23F6B38E' stroke-width='2'/%3E%3Cpath d='M12 12h8M12 16h8M12 20h5' stroke='%23F6B38E' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <!-- Тақырыпты бет жүктелмей тұрып қолдану (жыпылықтамау үшін) -->
+  <script>
+    (function () {
+      var th = null;
+      try { th = localStorage.getItem('sdc_theme'); } catch (e) {}
+      if (th !== 'light' && th !== 'dark') th = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = th;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="skip">Негізгі мазмұнға өту</a>
+
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+  </div>
+
+  <nav class="nav glass" id="nav" data-i18n-aria="nav.aria" aria-label="Негізгі мәзір">
+    <a href="#overview" class="brand" aria-label="Smart Data Center"><span class="brand-dot"></span>SDC</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#overview" class="active" data-i18n="nav.overview">Шолу</a>
+      <a href="#sensors" data-i18n="nav.sensors">Датчиктер</a>
+      <a href="#devices" data-i18n="nav.devices">Құрылғылар</a>
+      <a href="#rules" data-i18n="nav.rules">Автоматика</a>
+      <a href="#monitor" data-i18n="nav.monitor">Мониторинг</a>
+      <a href="#log"><span data-i18n="nav.log">Журнал</span> <span class="badge" id="navBadge" hidden>0</span></a>
+    </div>
+    <div class="nav-right">
+      <span class="mode-pill" id="modePill"><i></i><span>…</span></span>
+      <label class="lang-wrap">
+        <span class="sr-only" data-i18n="lang.aria">Тілді таңдау</span>
+        <select id="langSel" class="lang-sel"></select>
+      </label>
+      <button class="icon-btn" id="themeBtn" type="button">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <!-- ШОЛУ -->
+    <section id="overview" class="hero">
+      <div class="scene3d" id="scene3d" aria-hidden="true"></div>
+      <p class="eyebrow reveal"><span class="accent-dot"></span><span data-i18n="hero.eyebrow">IoT мониторинг платформасы · СОӨЖ №60</span></p>
+      <h1 class="giant" aria-label="Data Center">
+        <span class="g-line" aria-hidden="true"><span class="g-word">Data</span></span>
+        <span class="g-line ghost" aria-hidden="true"><span class="g-word">Center</span></span>
+      </h1>
+      <p class="lead reveal" data-i18n="hero.lead"></p>
+
+      <div class="kpis">
+        <div class="kpi glass reveal" data-k="temp"><span class="kpi-label" data-i18n="kpi.temp"></span><span class="kpi-val"><b class="num">—</b><small>°C</small></span><i class="kpi-dot"></i><span class="sr-only kpi-lvl"></span></div>
+        <div class="kpi glass reveal" data-k="hum"><span class="kpi-label" data-i18n="kpi.hum"></span><span class="kpi-val"><b class="num">—</b><small>%</small></span><i class="kpi-dot"></i><span class="sr-only kpi-lvl"></span></div>
+        <div class="kpi glass reveal" data-k="load"><span class="kpi-label" data-i18n="kpi.load"></span><span class="kpi-val"><b class="num">—</b><small>%</small></span><i class="kpi-dot"></i><span class="sr-only kpi-lvl"></span></div>
+        <div class="kpi glass reveal" data-k="power"><span class="kpi-label" data-i18n="kpi.power"></span><span class="kpi-val"><b class="num">—</b><small>kW</small></span></div>
+        <div class="kpi kpi-status glass reveal" id="sysStatus"><span class="kpi-label" data-i18n="kpi.status"></span><span class="status-text">—</span><span class="muted small" id="statusSub"></span></div>
+      </div>
+    </section>
+
+    <!-- ДАТЧИКТЕР -->
+    <section id="sensors" class="section" aria-labelledby="h-sensors">
+      <header class="sec-head reveal">
+        <h2 id="h-sensors" data-i18n="sec.sensors"></h2>
+        <p class="sec-sub" data-i18n="sec.sensors.sub"></p>
+      </header>
+
+      <div class="sim-bar glass reveal">
+        <div class="sim-toggle">
+          <button class="switch" id="autoSim" type="button" role="switch" aria-checked="true" aria-labelledby="simTitle"></button>
+          <span><b id="simTitle" data-i18n="sim.title"></b><span class="muted small" data-i18n="sim.sub"></span></span>
+        </div>
+        <div class="scenarios" role="group" aria-labelledby="scnLbl">
+          <span class="muted small" id="scnLbl" data-i18n="sim.scn"></span>
+          <button class="chip" type="button" data-scn="heat" data-i18n="scn.heat"></button>
+          <button class="chip" type="button" data-scn="outage" data-i18n="scn.outage"></button>
+          <button class="chip" type="button" data-scn="humid" data-i18n="scn.humid"></button>
+          <button class="chip" type="button" data-scn="peak" data-i18n="scn.peak"></button>
+          <button class="chip chip-ghost" type="button" data-scn="reset" data-i18n="scn.reset"></button>
+        </div>
+      </div>
+
+      <div class="grid grid-4" id="sensorGrid"></div>
+    </section>
+
+    <!-- ҚҰРЫЛҒЫЛАР -->
+    <section id="devices" class="section" aria-labelledby="h-devices">
+      <header class="sec-head reveal">
+        <h2 id="h-devices" data-i18n="sec.devices"></h2>
+        <p class="sec-sub" data-i18n="sec.devices.sub"></p>
+      </header>
+      <div class="grid grid-3" id="deviceGrid"></div>
+    </section>
+
+    <!-- АВТОМАТИКА -->
+    <section id="rules" class="section" aria-labelledby="h-rules">
+      <header class="sec-head reveal">
+        <h2 id="h-rules" data-i18n="sec.rules"></h2>
+        <p class="sec-sub" data-i18n="sec.rules.sub"></p>
+      </header>
+      <div class="rules" id="ruleList"></div>
+    </section>
+
+    <!-- МОНИТОРИНГ -->
+    <section id="monitor" class="section" aria-labelledby="h-monitor">
+      <header class="sec-head reveal">
+        <h2 id="h-monitor" data-i18n="sec.monitor"></h2>
+        <p class="sec-sub" data-i18n="sec.monitor.sub"></p>
+      </header>
+
+      <div class="monitor-grid">
+        <div class="glass card chart-card reveal">
+          <div class="chart-top">
+            <div class="tabs" id="chartTabs" role="tablist" data-i18n-aria="chart.tabs"></div>
+            <span class="muted small" id="chartInfo"></span>
+          </div>
+          <div class="chart-wrap" id="chartPanel" role="tabpanel"><svg id="lineChart" class="line-chart" role="img"></svg></div>
+          <div class="stats" id="stats"></div>
+        </div>
+
+        <div class="side-col">
+          <div class="glass card reveal">
+            <h3 class="card-title" data-i18n="power.title"></h3>
+            <div class="donut-wrap">
+              <svg id="donut" viewBox="0 0 140 140" class="donut" aria-hidden="true"></svg>
+              <ul class="legend" id="legend"></ul>
+            </div>
+          </div>
+          <div class="glass card energy reveal">
+            <div><span class="muted small" data-i18n="energy.today"></span><b class="big"><span class="num" id="energyToday">0</span> <small>kWh</small></b></div>
+            <div><span class="muted small" data-i18n="energy.active"></span><b class="big" id="activeCount">0</b></div>
+            <div><span class="muted small" data-i18n="energy.alerts"></span><b class="big" id="alertCount">0</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ЖУРНАЛ -->
+    <section id="log" class="section" aria-labelledby="h-log">
+      <header class="sec-head reveal">
+        <h2 id="h-log" data-i18n="sec.log"></h2>
+        <p class="sec-sub" data-i18n="sec.log.sub"></p>
+      </header>
+      <div class="glass card reveal">
+        <div class="log-top">
+          <div class="tabs" id="logTabs" role="tablist" data-i18n-aria="log.tabs">
+            <button class="tab active" type="button" role="tab" aria-selected="true" aria-controls="logList" data-f="all" data-i18n="log.all"></button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="logList" data-f="alert" data-i18n="log.alert"></button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="logList" data-f="auto" data-i18n="log.auto"></button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="logList" data-f="control" data-i18n="log.control"></button>
+          </div>
+          <button class="chip chip-ghost" type="button" id="clearLog" data-i18n="log.clear"></button>
+        </div>
+        <ul class="log-list" id="logList" role="tabpanel"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span data-i18n="footer.l"></span>
+    <span class="muted" data-i18n="footer.r"></span>
+  </footer>
+
+  <div class="toasts" id="toasts"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
