@@ -16,6 +16,11 @@
       try { th = localStorage.getItem('sdc_theme'); } catch (e) {}
       if (th !== 'light' && th !== 'dark') th = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       document.documentElement.dataset.theme = th;
+      // Анимациялар: сақталған таңдау, болмаса жүйе баптауы (prefers-reduced-motion)
+      var mo = null;
+      try { mo = localStorage.getItem('sdc_motion'); } catch (e) {}
+      if (mo !== 'on' && mo !== 'off') mo = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
+      if (mo === 'off') document.documentElement.classList.add('reduce-motion');
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,6 +51,10 @@
         <span class="sr-only" data-i18n="lang.aria">Тілді таңдау</span>
         <select id="langSel" class="lang-sel"></select>
       </label>
+      <button class="icon-btn" id="motionBtn" type="button">
+        <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+        <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5Z"/></svg>
+      </button>
       <button class="icon-btn" id="themeBtn" type="button">
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>

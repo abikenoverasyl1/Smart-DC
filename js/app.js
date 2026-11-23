@@ -611,6 +611,20 @@ function applyThemeButton() {
   $('#themeBtn').setAttribute('aria-label', t(dark ? 'theme.toLight' : 'theme.toDark'));
   $('meta[name="theme-color"]').setAttribute('content', dark ? '#0C0D15' : '#E8EBF1');
 }
+// Анимациялар батырмасы: жүйеде анимация өшірулі болса да қосуға болады
+function applyMotionButton() {
+  const off = document.documentElement.classList.contains('reduce-motion');
+  const b = $('#motionBtn');
+  b.setAttribute('aria-label', t(off ? 'motion.start' : 'motion.stop'));
+  b.title = t(off ? 'motion.start' : 'motion.stop');
+}
+function initMotion() {
+  $('#motionBtn').addEventListener('click', () => {
+    const off = document.documentElement.classList.toggle('reduce-motion');
+    try { localStorage.setItem('sdc_motion', off ? 'off' : 'on'); } catch (e) { /* */ }
+    applyMotionButton();
+  });
+}
 function initTheme() {
   $('#themeBtn').addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -630,6 +644,7 @@ function initLang() {
 function refreshTexts() {
   applyStatic();
   applyThemeButton();
+  applyMotionButton();
   setModePill(dbMode);
   renderAll(); renderLog(); renderChart();
   updateNavFade();
@@ -681,10 +696,11 @@ function initGlassPointer() {
 
 // Карточкалардың 3D еңкеюі
 function initTilt() {
-  if (matchMedia('(hover: none), (prefers-reduced-motion: reduce)').matches) return;
+  if (matchMedia('(hover: none)').matches) return;
   $$('.card, .kpi').forEach(el => {
     el.classList.add('tilt');
     el.addEventListener('pointermove', e => {
+      if (document.documentElement.classList.contains('reduce-motion')) return;
       const r = el.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
       el.classList.add('tilting');
@@ -710,7 +726,7 @@ function setModePill(mode) {
 async function main() {
   buildSensors(); buildDevices(); buildRules(); buildChartTabs();
   scene = build3D($('#scene3d'));
-  initLang(); applyStatic(); initTheme(); applyThemeButton();
+  initLang(); applyStatic(); initTheme(); applyThemeButton(); initMotion(); applyMotionButton();
   initReveal(); initTilt(); initHeroScroll(); initNav(); initGlassPointer();
   initTablistKeys($('#chartTabs')); initTablistKeys($('#logTabs'));
   $('#modePill span').textContent = t('mode.connecting');

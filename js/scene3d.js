@@ -65,11 +65,10 @@ export function build3D(root) {
   }, { passive: true });
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(root);
 
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   (function loop(now) {
     if (visible) {
       cx += (tx - cx) * 0.05; cy += (ty - cy) * 0.05;     // тегіс қозғалыс
-      const sway = reduce ? 0 : Math.sin((now - t0) / 4000) * 6;
+      const sway = document.documentElement.classList.contains('reduce-motion') ? 0 : Math.sin((now - t0) / 4000) * 6;
       const sp = Math.min(1, scrollY / innerHeight);
       world.style.transform =
         `rotateX(${-24 + cy * 6 + sp * 14}deg) rotateY(${-32 + cx * 14 + sway + sp * 40}deg) translateY(60px)`;

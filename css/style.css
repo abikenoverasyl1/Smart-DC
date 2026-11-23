@@ -534,9 +534,12 @@ main { width: min(1240px, 100% - 40px); margin: 0 auto; }
   .stage3d { transform: scale(.66); transform-origin: 50% 60%; }
   .scene-label { right: 50%; transform: translateX(50%); white-space: nowrap; }
 }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  html { scroll-behavior: auto; }
-  .reveal { opacity: 1; translate: none; rotate: none; }
-  .tilt { transform: none !important; }
-}
+/* Анимацияларды өшіру: жүйе баптауы немесе мәзірдегі батырма (html.reduce-motion) */
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+html.reduce-motion { scroll-behavior: auto; }
+.reduce-motion .reveal { opacity: 1; translate: none; rotate: none; }
+.reduce-motion .tilt { transform: none !important; }
+.reduce-motion .giant { transform: none; opacity: 1; }
+.i-play { fill: currentColor !important; stroke: none !important; }
+html:not(.reduce-motion) .i-play, html.reduce-motion .i-pause { display: none; }
+
